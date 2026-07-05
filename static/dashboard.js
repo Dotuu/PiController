@@ -27,3 +27,10 @@ async function restartPi() {
 
   document.getElementById("status").textContent = data.status;
 }
+
+async function refresh() {
+  let res = await fetch("/refresh", { method: "POST" });
+  let data = await res.json();
+
+  document.getElementById("refresh-status").innerText = data.status;
+}
