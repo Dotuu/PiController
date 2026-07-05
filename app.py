@@ -82,7 +82,7 @@ def refresh():
 
         subprocess.run(
             ["git", "pull"],
-            cwd="/home/pi/raspberry_dashboard"
+            cwd="/home/dallas/PiController"
         )
 
         subprocess.run([
