@@ -3,6 +3,8 @@ import subprocess
 import threading
 import os
 
+current_dir = os.path.expanduser("~")
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -14,27 +16,34 @@ def home():
 @app.route("/terminal", methods=["POST"])
 def terminal():
 
+    global current_directory
+
     command = request.json["command"]
 
-    try:
-        result = subprocess.run(
-            command,
-            shell=True,
-            capture_output=True,
-            text=True,
-            timeout=10
+    # Handle cd separately
+    if command.startswith("cd "):
+        new_path = os.path.abspath(
+            os.path.join(current_directory, command[3:])
         )
 
-        return jsonify({
-            "output": result.stdout,
-            "error": result.stderr
-        })
+        if os.path.isdir(new_path):
+            current_directory = new_path
+            return jsonify({"output": current_directory})
 
-    except Exception as e:
-        return jsonify({
-            "output": "",
-            "error": str(e)
-        })
+        return jsonify({"error": "Directory doesn't exist."})
+
+    result = subprocess.run(
+        command,
+        cwd=current_directory,
+        shell=True,
+        capture_output=True,
+        text=True
+    )
+
+    return jsonify({
+        "output": result.stdout,
+        "error": result.stderr
+    })
 
 # REBOOT
 
