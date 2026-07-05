@@ -75,6 +75,29 @@ def desktop():
     192.168.1.79
     """
 
+@app.route("/refresh", methods=["POST"])
+def refresh():
+
+    def update():
+
+        subprocess.run(
+            ["git", "pull"],
+            cwd="/home/pi/raspberry_dashboard"
+        )
+
+        subprocess.run([
+            "sudo",
+            "systemctl",
+            "restart",
+            "pi-dashboard"
+        ])
+
+    threading.Thread(target=update).start()
+
+    return jsonify({
+        "status": "Updating..."
+    })
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
