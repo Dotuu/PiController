@@ -1,0 +1,37 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Pi Dashboard</title>
+  </head>
+
+  <body>
+    <h1>Raspberry Pi Dashboard</h1>
+
+    <hr />
+
+    <h2>Remote Terminal</h2>
+
+    <input id="command" />
+
+    <button onclick="sendCommand()">Run</button>
+
+    <pre id="terminal"></pre>
+
+    <hr />
+
+    <h2>System</h2>
+
+    <button onclick="restartPi()">Restart Raspberry Pi</button>
+
+    <p id="status"></p>
+
+    <hr />
+
+    <h2>Remote Desktop</h2>
+
+    <a href="/desktop"> Open Instructions </a>
+
+    <script src="/static/dashboard.js"></script>
+  </body>
+</html>
